@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 #define BUF_SIZE 262144
+
+const struct timespec req = {
+  .tv_sec = 0,
+  .tv_nsec = 10000000,
+};
 
 int main() {
   char* line;
@@ -13,6 +19,7 @@ int main() {
     if (n_read < 0)
       break;
     write(1, line, n_read);
-    free(line);
+    fsync(1);
+    nanosleep(&req, NULL);
   }
 }
